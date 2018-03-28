@@ -11,7 +11,7 @@
     @helper.inputText(userForm("email"))
     @helper.inputText(userForm("password"))
     <input type="submit" value="SignIn"/><br/>
-    #{a @routes.SignUpController.()}Forgot Password#{/a}
+    <a href = "@routes.ProfileController.forgotPassword()">Forgot Password</a>
 
 }
 }
