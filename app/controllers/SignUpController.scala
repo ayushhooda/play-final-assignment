@@ -17,14 +17,9 @@ class SignUpController @Inject()(cc: ControllerComponents, form: UserForms, user
     Ok(views.html.signup(form.signUpForm))
   }
 
-  def signIn = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.signin(form.signInForm))
-  }
-
   def profile = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.profile())
   }
-
 
   def userPost = Action.async { implicit request: Request[AnyContent] =>
     form.signUpForm.bindFromRequest().fold(

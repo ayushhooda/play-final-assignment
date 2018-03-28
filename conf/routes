@@ -6,10 +6,13 @@
 # An example controller showing a sample home page
 GET     /                                 controllers.HomeController.index
 GET     /signup                           controllers.SignUpController.signUp
-GET     /signin                           controllers.SignUpController.signIn
+GET     /signin                           controllers.SignInController.signIn
 GET     /profile                          controllers.SignUpController.profile
-GET     /reset-password                   controllers.HomeController.forgotPassword
+GET     /forgot-password                  controllers.ProfileController.forgotPassword
 POST    /userpost                         controllers.SignUpController.userPost
+GET     /reset-password                   controllers.ProfileController.resetPassword
+
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
