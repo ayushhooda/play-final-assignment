@@ -1,0 +1,17 @@
+@import model.UserSignIn
+
+@(userForm: Form[UserSignIn])(implicit request: RequestHeader, messages: MessagesProvider)
+
+@import helper._
+
+
+@main("Sign In"){
+@helper.form(action = routes.SignUpController.profile) {
+    @CSRF.formField
+    @helper.inputText(userForm("email"))
+    @helper.inputText(userForm("password"))
+    <input type="submit" value="SignIn"/><br/>
+    #{a @routes.SignUpController.()}Forgot Password#{/a}
+
+}
+}

@@ -1,0 +1,17 @@
+@()(implicit request: play.api.mvc.RequestHeader)
+
+@main("Welcome to App") {
+
+    <html>
+
+        <form action="@routes.SignUpController.signUp">
+            <input type="submit" value="Signup" />
+        </form>
+
+        <form action="@routes.SignUpController.signIn">
+            <input type="submit" value="Signin" />
+        </form>
+
+
+    </html>
+}
