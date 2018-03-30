@@ -5,6 +5,7 @@ import javax.inject.Inject
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 import slick.lifted.ProvenShape
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -50,7 +51,7 @@ trait UserInfoFirst extends HasDatabaseConfigProvider[JdbcProfile]
 trait UserInfoRepoInterface {
   def store(userInformation: User): Future[Boolean]
 
-//  def findByEmailAndPassword(email: String,password:String): Future[Option[User]]
+  def findUser(email: String,password:String): Future[Boolean]
 
 }
 trait UserInfoRepoImplementation extends UserInfoRepoInterface {
@@ -60,4 +61,21 @@ trait UserInfoRepoImplementation extends UserInfoRepoInterface {
 
   def store(userInformation: User): Future[Boolean] =
     db.run(userQuery += userInformation) map (_ > 0)
+
+  def findUser(email: String, password: String): Future[Boolean] = {
+    db.run(userQuery
+      .filter(data => data.email.toLowerCase === email.toLowerCase && data.password === password)
+      .to[List].result).map(_.nonEmpty)
+  }
+
+  def isUserEnabled(email: String): Future[Boolean] = {
+    db.run(userQuery.filter(user => user.email === email && user.isEnable).to[List].result).map(_.nonEmpty)
+  }
+
+  def checkUserExists(email: String): Future[Boolean] = {
+    db.run(userQuery.filter(_.email === email).to[List].result).map(_.nonEmpty)
+  }
+
+
+
 }

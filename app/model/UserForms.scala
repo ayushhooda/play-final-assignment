@@ -21,8 +21,8 @@ class UserForms {
   val nameRegex = "[a-zA-Z]"
 
   val signInForm: Form[UserSignIn] = Form(mapping(
-    "email" -> text.verifying("Enter Email", _.nonEmpty),
-    "password" -> text.verifying("Enter Password", _.nonEmpty)
+    "email" -> email,
+    "password" -> text.verifying(passwordCheckConstraint())
   )(UserSignIn.apply)(UserSignIn.unapply))
 
   val signUpForm: Form[UserSignUp] = Form(mapping(
@@ -49,10 +49,14 @@ class UserForms {
 
   val forgotPasswordForm = Form(mapping(
     "email" -> email,
-    "newPassword" -> nonEmptyText.verifying(),
+    "newPassword" -> text.verifying(passwordCheckConstraint()),
     "confirmPassword" -> nonEmptyText
   )(ForgotPassword.apply)(ForgotPassword.unapply)
-    verifying("Password fields do not match", forget => forget.newPassword == forget.confirmPassword))
+      .verifying("Password fields do not match", forget => forget match
+      {
+        case user => passwordCheck(user.newPassword, user.confirmPassword)
+      })
+  )
 
   val allNumbers: Regex = """\d*""".r
   val allLetters: Regex = """[A-Za-z]*""".r
