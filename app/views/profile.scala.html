@@ -1,8 +1,10 @@
-@()(implicit request: RequestHeader)
+@import model.User
+
+@()(implicit request: RequestHeader, flash: Flash)
 
 @main("Welcome User") {
 <html>
-
+@flash.get("success").getOrElse("")
 <form action="@routes.SignUpController.signUp">
     <input type="submit" value="Update Information" />
 </form>

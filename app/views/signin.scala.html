@@ -1,12 +1,13 @@
 @import model.UserSignIn
 
-@(userForm: Form[UserSignIn])(implicit request: RequestHeader, messages: MessagesProvider)
+@(userForm: Form[UserSignIn])(implicit request: RequestHeader, messages: MessagesProvider, flash: Flash)
 
 @import helper._
 
 
 @main("Sign In"){
-@helper.form(action = routes.SignUpController.profile) {
+@helper.form(action = routes.SignInController.userPost) {
+@flash.get("failure").getOrElse("")
     @CSRF.formField
     @helper.inputText(userForm("email"))
     @helper.inputText(userForm("password"))
