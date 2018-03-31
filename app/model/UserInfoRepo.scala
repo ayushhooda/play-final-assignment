@@ -5,6 +5,7 @@ import javax.inject.Inject
 import play.api.db.slick.{DatabaseConfigProvider, HasDatabaseConfigProvider}
 import slick.jdbc.JdbcProfile
 import slick.lifted.ProvenShape
+import sun.security.krb5.KrbCryptoException
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -76,6 +77,8 @@ trait UserInfoRepoImplementation extends UserInfoRepoInterface {
     db.run(userQuery.filter(_.email === email).to[List].result).map(_.nonEmpty)
   }
 
-
+  def updatePassword(email: String, password: String): Future[Boolean] = {
+    db.run(userQuery.filter(_.email === email).map(_.password).update(password)).map(_ > 0)
+  }
 
 }
