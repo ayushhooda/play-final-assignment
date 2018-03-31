@@ -9,8 +9,8 @@
 @helper.form(action = routes.SignInController.userPost) {
 @flash.get("failure").getOrElse("")
     @CSRF.formField
-    @helper.inputText(userForm("email"))
-    @helper.inputText(userForm("password"))
+    @helper.inputText(userForm("email"), '_label -> "Email", '_showConstraints -> false)
+    @helper.inputText(userForm("password"), '_label -> "Password", '_showConstraints -> false)
     <input type="submit" value="SignIn"/><br/>
     <a href = "@routes.ProfileController.forgotPassword()">Forgot Password</a>
 

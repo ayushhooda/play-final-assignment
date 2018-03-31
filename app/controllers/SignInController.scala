@@ -26,7 +26,24 @@ class SignInController @Inject()(cc: ControllerComponents, form: UserForms, user
         userRepo.findUser(data.email, data.password).map {
           case true => Redirect(routes.SignUpController.profile()).withSession("email" -> userData.email)
               .flashing("success" -> "Welcome back !!")
-          case false => Redirect(routes.HomeController.index())
+          case false => Redirect(routes.SignUpController.signUp()).flashing("failure" -> "Please register first !!!")
+        }
+      }
+    )
+  }
+
+  def changePassword = Action async { implicit request: Request[AnyContent] =>
+    form.forgotPasswordForm.bindFromRequest().fold(
+      formsWithErrors => {
+        Future.successful(BadRequest(views.html.forgotPassword(formsWithErrors)))
+      },
+      userData => {
+        userRepo.checkUserExists(userData.email).map {
+          case true =>
+            userRepo.updatePassword(userData.email, userData.newPassword)
+            Redirect(routes.SignInController.signIn()).flashing("failure" -> "Password successfully changed")
+          case false => Redirect(routes.ProfileController.forgotPassword())
+              .flashing("success" -> "Email entered donot exist !!!")
         }
       }
     )

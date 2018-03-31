@@ -1,6 +1,6 @@
 @import model.UserSignUp
 
-@(userForm: Form[UserSignUp])(implicit request: RequestHeader, messages: MessagesProvider)
+@(userForm: Form[UserSignUp])(implicit request: RequestHeader, messages: MessagesProvider, flash: Flash)
 
 @import helper._
 
@@ -15,6 +15,7 @@
 }
 <h2>Normal User Registration Form</h2>
 @helper.form(action = routes.SignUpController.userPost()) {
+@flash.get("failure")
 @CSRF.formField
 @helper.inputText(userForm("fname"), '_label -> "First Name", '_showConstraints -> false)
 @helper.inputText(userForm("mname"), '_label -> "Middle Name")
