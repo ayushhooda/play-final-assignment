@@ -8,12 +8,17 @@ GET     /                                 controllers.HomeController.index
 GET     /signup                           controllers.SignUpController.signUp
 GET     /signin                           controllers.SignInController.signIn
 GET     /profile                          controllers.SignUpController.profile
+GET     /adminHome                        controllers.AdminController.profile
 GET     /forgot-password                  controllers.ProfileController.forgotPassword
 POST    /userpost                         controllers.SignUpController.userPost
 GET     /change-password                  controllers.SignInController.changePassword
 POST    /userlogin                        controllers.SignInController.userPost
 GET     /add-assignment                   controllers.AdminController.addAssignment
 GET     /show-assignments                 controllers.AdminController.showAssignments
+GET     /logout                           controllers.HomeController.logout
+GET     /view-users                       controllers.AdminController.showUsers
+GET     /enableOrDisable/:email/:isEnable controllers.AdminController.enableOrDisableUser(email: String, isEnable: Boolean)
+GET     /deleteAssignment/:id             controllers.AdminController.deleteAssignment(id: Int)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

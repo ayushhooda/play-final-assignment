@@ -1,0 +1,42 @@
+@import model.User
+
+@(listUsers: List[User])
+
+
+@main("All Users") {
+
+@if(listUsers.isEmpty){
+<h3>There are no users</h3>
+} else{
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th style="width:25%">Email</th>
+        <th style="width:25%">Is Enabled</th>
+        <th style="width:25%">Enable User</th>
+        <th style="width:25%">Disable User</th>
+    </tr>
+    </thead>
+
+    <tbody>@for(user<-listUsers){
+    <tr>@helper.form(action=routes.AdminController.enableOrDisableUser(user.email,user.isEnabled)){
+
+        <td>@user.email</td>
+        <td>@user.isEnabled</td>
+        @if(user.isEnabled){
+        <td><button value="@user.email"  disabled>Enable</button></td>
+        <td><button value="@user.email" >Disable</button></td>
+        }else{
+        <td><button value="@user.email" >Enable</button></td>
+        <td><button value="@user.email" disabled>Disable</button></td>
+        }
+        }
+    </tr>
+    }
+    </tbody>
+</table>
+}
+
+
+
+}

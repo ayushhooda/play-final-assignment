@@ -35,6 +35,8 @@ trait AssignmentInfoRepoInterface {
 
   def viewAssignments(): Future[List[Assignment]]
 
+  def deleteAssignment(id: Int): Future[Boolean]
+
 }
 
 trait AssignmentInfoRepoImplementation extends AssignmentInfoRepoInterface {
@@ -47,6 +49,10 @@ trait AssignmentInfoRepoImplementation extends AssignmentInfoRepoInterface {
 
   def viewAssignments(): Future[List[Assignment]] = {
     db.run(assignmentQuery.to[List].result)
+  }
+
+  def deleteAssignment(id: Int): Future[Boolean] = {
+    db.run(assignmentQuery.filter(_.id === id).delete).map(_ > 0)
   }
   
 }
