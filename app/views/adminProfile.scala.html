@@ -5,7 +5,7 @@
 <html>
 @flash.get("success").getOrElse("")
 @CSRF.formField
-<form action="@routes.SignUpController.signUp">
+<form action="@routes.ProfileController.getProfileDetails">
     <input type="submit" value="Profile" />
 </form>
 

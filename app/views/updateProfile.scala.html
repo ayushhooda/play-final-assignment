@@ -1,0 +1,17 @@
+@import model.UserProfile
+
+@(user: Form[UserProfile])(implicit messages:Messages, request: RequestHeader)
+
+@main("Update Profile") {
+
+@helper.form(action = routes.ProfileController.updateDetails()){
+@helper.inputText(user("fname"),'_showConstraints->false, '_label->"First name")
+@helper.inputText(user("mname"),'_showConstraints->false, '_label->"Middle name")
+@helper.inputText(user("lname"),'_showConstraints->false, '_label->"Last name")
+@helper.inputText(user("mobile"),'_showConstraints->false, '_label->"Mobile no")
+@helper.inputText(user("age"), '_showConstraints->false, '_label->"Age")
+@helper.inputText(user("hobbies"), '_showConstraints->false, '_label->"Hobbies")
+<button type="submit">Update</button>
+}
+
+}

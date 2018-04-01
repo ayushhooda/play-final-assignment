@@ -16,6 +16,9 @@ case class UserAssignment (title:String, description:String)
 
 case class ForgotPassword(email: String, newPassword: String, confirmPassword: String)
 
+case class UserProfile(fname: String, mname: String, lname: String, mobile: String,
+                       age: Int, hobbies: String)
+
 class UserForms {
 
   val nameRegex = "[a-zA-Z]"
@@ -57,6 +60,16 @@ class UserForms {
         case user => passwordCheck(user.newPassword, user.confirmPassword)
       })
   )
+
+  val userProfileForm = Form(mapping(
+    "fname" -> nonEmptyText.verifying(allLettersConstraint),
+    "mname" -> text,
+    "lname" -> nonEmptyText.verifying(allLettersConstraint),
+    "mobile" -> text.verifying(checkLengthConstraint),
+    "age" -> number(min = 18, max = 75),
+    "hobbies" -> text
+  )(UserProfile.apply)(UserProfile.unapply))
+
 
   val allNumbers: Regex = """\d*""".r
   val allLetters: Regex = """[A-Za-z]*""".r
