@@ -17,8 +17,8 @@ class ProfileController @Inject()(cc: ControllerComponents, userForm: UserForms)
     Ok(views.html.forgotPassword(userForm.forgotPasswordForm))
   }
 
-  def resetPassword = Action { implicit request: Request[AnyContent] =>
-    Ok("Password successfully changed")
-  }
+//  def adminProfile = Action { implicit request: Request[AnyContent] =>
+//
+//  }
 
 }
