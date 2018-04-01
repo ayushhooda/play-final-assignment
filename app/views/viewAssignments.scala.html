@@ -13,13 +13,18 @@
     <tr>
         <th style="width:10%">Title</th>
         <th style="width:80%">Description</th>
+        <th style="width:10%">Action</th>
     </tr>
     </thead>
 
     <tbody>@for(assignment<-listAssignments){
-    <tr>
+    <tr>@helper.form(action=routes.AdminController.deleteAssignment(assignment.id)){
         <td>@assignment.title</td>
         <td>@assignment.description</td>
+        <td>
+            <button value="@assignment.id">Delete</button>
+        </td>
+        }
     </tr>
     }
     </tbody>

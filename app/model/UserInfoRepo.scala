@@ -62,6 +62,8 @@ trait UserInfoRepoInterface {
 
   def isAdmin(email: String): Future[Boolean]
 
+  def enableOrDisableUser(email: String, value: Boolean): Future[Boolean]
+
 }
 
 trait UserInfoRepoImplementation extends UserInfoRepoInterface {
@@ -118,5 +120,9 @@ trait UserInfoRepoImplementation extends UserInfoRepoInterface {
 //          userData.gender, userData.age)
 //    }
 //  }
+
+  def enableOrDisableUser(email: String, value: Boolean): Future[Boolean] = {
+    db.run(userQuery.filter(_.email === email).map(_.isEnable).update(value)).map(_ > 0)
+  }
 
 }

@@ -11,4 +11,10 @@ class HomeController @Inject()(cc: ControllerComponents) extends AbstractControl
     Ok(views.html.index())
   }
 
+  def logout = Action {
+    Redirect(routes.SignInController.signIn()).withNewSession.flashing(
+      "failure" -> "You've been logged out"
+    )
+  }
+
 }

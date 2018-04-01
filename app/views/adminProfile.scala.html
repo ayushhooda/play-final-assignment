@@ -1,26 +1,27 @@
 @()(implicit request: RequestHeader, messages: MessagesProvider, flash: Flash)
-
+@import helper._
 @main("Admin Page") {
 
 <html>
 @flash.get("success").getOrElse("")
+@CSRF.formField
 <form action="@routes.SignUpController.signUp">
     <input type="submit" value="Profile" />
 </form>
 
-<form action="@routes.SignInController.signIn">
+<form action="@routes.AdminController.showAssignments">
     <input type="submit" value="View Assignments" />
 </form>
 
-<form action="@routes.SignInController.signIn">
+<form action="@routes.AdminController.showUsers">
     <input type="submit" value="View Users" />
 </form>
 
-<form action="@routes.SignInController.signIn">
-    <input type="submit" value="Add Assignments" />
+<form action="@routes.AdminController.addAssignment">
+    <input type="submit" value="Add Assignment" />
 </form>
 
-<form action="@routes.HomeController.index">
+<form action="@routes.HomeController.logout">
     <input type="submit" value="Log Out" />
 </form>
 
