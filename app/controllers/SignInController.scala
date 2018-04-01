@@ -4,7 +4,8 @@ import javax.inject.Inject
 
 import model.{User, UserForms, UserInfoRepo, UserSignIn}
 import play.api.i18n.I18nSupport
-import play.api.mvc.{AbstractController, AnyContent, ControllerComponents, Request}
+import play.api.mvc._
+
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
@@ -16,7 +17,7 @@ class SignInController @Inject()(cc: ControllerComponents, form: UserForms, user
     Ok(views.html.signin(form.signInForm))
   }
 
-  def userPost = Action async { implicit request: Request[AnyContent] =>
+  def userPost: Action[AnyContent] = Action async { implicit request: Request[AnyContent] =>
     form.signInForm.bindFromRequest().fold(
       formsWithErrors => {
         Future.successful(BadRequest(views.html.signin(formsWithErrors)))
@@ -24,15 +25,22 @@ class SignInController @Inject()(cc: ControllerComponents, form: UserForms, user
       userData => {
         val data = UserSignIn(userData.email, userData.password)
         userRepo.findUser(data.email, data.password).map {
-          case true => Redirect(routes.SignUpController.profile()).withSession("email" -> userData.email)
-              .flashing("success" -> "Welcome back !!")
+          case true =>
+            userRepo.isAdmin(data.email).map {
+              case true => Redirect(routes.SignUpController.profile()).withSession("email" -> userData.email)
+                .flashing("success" -> "Welcome back !!")
+              case false => Redirect(routes.SignUpController.profile()).withSession("email" -> userData.email)
+                .flashing("success" -> "Welcome back !!")
+            }
+            Redirect(routes.SignUpController.profile()).withSession("email" -> userData.email)
+                .flashing("success" -> "Welcome back !!")
           case false => Redirect(routes.SignUpController.signUp()).flashing("failure" -> "Please register first !!!")
         }
       }
     )
   }
 
-  def changePassword = Action async { implicit request: Request[AnyContent] =>
+  def changePassword: Action[AnyContent] = Action async { implicit request: Request[AnyContent] =>
     form.forgotPasswordForm.bindFromRequest().fold(
       formsWithErrors => {
         Future.successful(BadRequest(views.html.forgotPassword(formsWithErrors)))

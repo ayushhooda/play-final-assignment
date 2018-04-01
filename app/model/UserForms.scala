@@ -12,7 +12,7 @@ case class UserSignUp(fname: String,mname: String, lname: String, email: String,
                       password: String, confirmPwd: String, mobile: String, gender: String,
                       age: Int, hobbies: String)
 
-case class Assignment (title:String, description:String)
+case class UserAssignment (title:String, description:String)
 
 case class ForgotPassword(email: String, newPassword: String, confirmPassword: String)
 
@@ -43,9 +43,9 @@ class UserForms {
 
 
   val assignmentForm = Form(mapping(
-    "title" -> text.verifying("Enter title", _.nonEmpty),
-    "description" -> text.verifying("Enter description", _.nonEmpty)
-  )(Assignment.apply)(Assignment.unapply))
+    "title" -> nonEmptyText,
+    "description" -> nonEmptyText
+  )(UserAssignment.apply)(UserAssignment.unapply))
 
   val forgotPasswordForm = Form(mapping(
     "email" -> email,

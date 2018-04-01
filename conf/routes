@@ -12,6 +12,8 @@ GET     /forgot-password                  controllers.ProfileController.forgotPa
 POST    /userpost                         controllers.SignUpController.userPost
 GET     /change-password                  controllers.SignInController.changePassword
 POST    /userlogin                        controllers.SignInController.userPost
+GET     /add-assignment                   controllers.AdminController.addAssignment
+GET     /show-assignments                 controllers.AdminController.showAssignments
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

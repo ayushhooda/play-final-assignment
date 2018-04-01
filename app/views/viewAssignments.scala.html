@@ -1,0 +1,29 @@
+@import model.Assignment
+
+@(listAssignments:List[Assignment])
+
+
+@main("List of Assignments") {
+
+@if(listAssignments.isEmpty){
+<h3>There are no assignments.</h3>
+} else{
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th style="width:10%">Title</th>
+        <th style="width:80%">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>@for(assignment<-listAssignments){
+    <tr>
+        <td>@assignment.title</td>
+        <td>@assignment.description</td>
+    </tr>
+    }
+    </tbody>
+</table>
+}
+
+}

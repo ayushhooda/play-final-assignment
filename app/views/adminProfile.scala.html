@@ -1,8 +1,7 @@
-@import model.User
+@()(implicit request: RequestHeader, messages: MessagesProvider, flash: Flash)
 
-@()(implicit request: RequestHeader, flash: Flash)
+@main("Admin Page") {
 
-@main("Welcome User") {
 <html>
 @flash.get("success").getOrElse("")
 <form action="@routes.SignUpController.signUp">
@@ -13,9 +12,20 @@
     <input type="submit" value="View Assignments" />
 </form>
 
+<form action="@routes.SignInController.signIn">
+    <input type="submit" value="View Users" />
+</form>
+
+<form action="@routes.SignInController.signIn">
+    <input type="submit" value="Add Assignments" />
+</form>
+
 <form action="@routes.HomeController.index">
     <input type="submit" value="Log Out" />
 </form>
 
+
+
 </html>
+
 }
