@@ -52,7 +52,7 @@ trait UserInfoFirst extends HasDatabaseConfigProvider[JdbcProfile]
 trait UserInfoRepoInterface {
   def store(userInformation: User): Future[Boolean]
 
-  def findUser(email: String,password:String): Future[Boolean]
+  def isUserValid(email: String,password:String): Future[Boolean]
 
   def isUserEnabled(email: String): Future[Boolean]
 
@@ -74,7 +74,7 @@ trait UserInfoRepoImplementation extends UserInfoRepoInterface {
   def store(userInformation: User): Future[Boolean] =
     db.run(userQuery += userInformation) map (_ > 0)
 
-  def findUser(email: String, password: String): Future[Boolean] = {
+  def isUserValid(email: String, password: String): Future[Boolean] = {
     db.run(userQuery
       .filter(data => data.email.toLowerCase === email.toLowerCase && data.password === password)
       .to[List].result).map(_.nonEmpty)
@@ -93,8 +93,7 @@ trait UserInfoRepoImplementation extends UserInfoRepoInterface {
   }
 
   def isAdmin(email: String): Future[Boolean] = {
-    db.run(userQuery.filter(x => x.email === email).map(_.isAdmin)
-      .to[List].result).map(_.nonEmpty)
+    db.run(userQuery.filter(x => x.email === email && x.isAdmin).to[List].result).map(_.nonEmpty)
   }
 
   // Admin's view all users method
@@ -103,23 +102,17 @@ trait UserInfoRepoImplementation extends UserInfoRepoInterface {
   }
 
   // User's update details method
-  def updateUserDetails(email: String, updatedData: User): Future[Boolean] = {
+  def updateUserDetails(email: String, updatedData: UserProfile): Future[Boolean] = {
     db.run(userQuery.filter(_.email === email).map(user => (user.fname, user.mname, user.lname,
-      user.mobile, user.gender, user.age)).update(updatedData.fname, updatedData.mname,
-      updatedData.lname, updatedData.mobile, updatedData.gender, updatedData.age)).map(_ > 0)
+      user.mobile, user.age, user.hobbies)).update(updatedData.fname, updatedData.mname,
+      updatedData.lname, updatedData.mobile, updatedData.age, updatedData.hobbies)).map(_ > 0)
   }
 
   // User's view profile method
-//  def getUserDetails(email: String): Future[UserProfileData] = {
-//    val userDetails: Future[List[UserData]] = db.run(userQuery.filter(_.email === email)
-//      .to[List].result)
-//    userDetails.map {
-//      users =>
-//        val userData: UserData = users.head
-//        UserProfileData(userData.firstName, userData.middleName, userData.lastName, userData.mobileNo,
-//          userData.gender, userData.age)
-//    }
-//  }
+  def getUserDetails(email: String): Future[User] = {
+    db.run(userQuery.filter(_.email === email)
+      .to[List].result.head)
+  }
 
   def enableOrDisableUser(email: String, value: Boolean): Future[Boolean] = {
     db.run(userQuery.filter(_.email === email).map(_.isEnable).update(value)).map(_ > 0)

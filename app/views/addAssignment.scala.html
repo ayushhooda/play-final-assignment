@@ -2,7 +2,6 @@
 @(userForm: Form[UserAssignment])(implicit request: RequestHeader, messages: MessagesProvider, flash: Flash)
 @import helper._
 @main("Welcome User") {
-  <h1>List of Assignments</h1>
 @helper.form(action = routes.AdminController.addAssignment) {
 @flash.get("success")
 @CSRF.formField

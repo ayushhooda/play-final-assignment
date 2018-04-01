@@ -19,6 +19,10 @@ GET     /logout                           controllers.HomeController.logout
 GET     /view-users                       controllers.AdminController.showUsers
 GET     /enableOrDisable/:email/:isEnable controllers.AdminController.enableOrDisableUser(email: String, isEnable: Boolean)
 GET     /deleteAssignment/:id             controllers.AdminController.deleteAssignment(id: Int)
+GET     /viewAssignments                  controllers.ProfileController.viewAssignments
+GET     /updateDetails                    controllers.ProfileController.updateDetails
+GET     /getProfileDetails                controllers.ProfileController.getProfileDetails
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)

@@ -5,11 +5,11 @@
 @main("Welcome User") {
 <html>
 @flash.get("success").getOrElse("")
-<form action="@routes.SignUpController.signUp">
+<form action="@routes.ProfileController.getProfileDetails">
     <input type="submit" value="Profile" />
 </form>
 
-<form action="@routes.SignInController.signIn">
+<form action="@routes.ProfileController.viewAssignments">
     <input type="submit" value="View Assignments" />
 </form>
 

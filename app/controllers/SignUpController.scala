@@ -19,7 +19,7 @@ class SignUpController @Inject()(cc: ControllerComponents, form: UserForms, user
   }
 
   def profile = Action { implicit request: Request[AnyContent] =>
-    Ok(views.html.profile())
+    Ok(views.html.userProfile())
   }
 
   def userPost = Action.async { implicit request: Request[AnyContent] =>
