@@ -17,13 +17,16 @@ trait AssignmentInfoFirst extends HasDatabaseConfigProvider[JdbcProfile]
 
   class AssignmentForm(tag: Tag) extends Table[Assignment](tag, "assignment_details") {
 
-    def id = column[Int]("id")
+    def id: Rep[Int] = column[Int]("id")
 
     def title: Rep[String] = column[String]("title")
 
     def description: Rep[String] = column[String]("description")
 
+    //scalastyle:off
     def * : ProvenShape[Assignment] = (id,title,description)<>(Assignment.tupled, Assignment.unapply)
+    //scalstyle:on
+
   }
 
   val assignmentQuery: TableQuery[AssignmentForm] = TableQuery[AssignmentForm]
@@ -54,5 +57,4 @@ trait AssignmentInfoRepoImplementation extends AssignmentInfoRepoInterface {
   def deleteAssignment(id: Int): Future[Boolean] = {
     db.run(assignmentQuery.filter(_.id === id).delete).map(_ > 0)
   }
-  
 }

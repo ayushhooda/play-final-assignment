@@ -14,7 +14,7 @@ class SignInController @Inject()(cc: ControllerComponents, form: UserForms, user
 
   val message = cc.messagesApi
 
-  def signIn = Action { implicit request: Request[AnyContent] =>
+  def signIn: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.signin(form.signInForm))
   }
 
@@ -28,13 +28,16 @@ class SignInController @Inject()(cc: ControllerComponents, form: UserForms, user
 
         userRepo.isUserValid(data.email, data.password).map {
           case true =>
-            if (Await.result(userRepo.isAdmin(data.email), Duration.Inf))
+            if (Await.result(userRepo.isAdmin(data.email), Duration.Inf)) {
               Redirect(routes.AdminController.profile()).withSession("email" -> userData.email)
-            else if (!Await.result(userRepo.isUserEnabled(data.email), Duration.Inf))
+            }
+            else if (!Await.result(userRepo.isUserEnabled(data.email), Duration.Inf)) {
               Redirect(routes.SignInController.signIn()).flashing("failure" -> "disabled by admin")
-            else
+            }
+            else {
               Redirect(routes.SignUpController.profile()).withSession("email" -> userData.email)
                 .flashing("success" -> "Welcome back !!")
+            }
           case false =>
             Redirect(routes.SignUpController.signUp()).flashing("failure" -> "Please register first !!!")
 

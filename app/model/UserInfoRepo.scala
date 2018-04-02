@@ -18,7 +18,7 @@ trait UserInfoFirst extends HasDatabaseConfigProvider[JdbcProfile]
 
   class UserForm(tag: Tag) extends Table[User](tag, "user_details") {
 
-    def id = column[Int]("id")
+    def id: Rep[Int] = column[Int]("id")
 
     def fname: Rep[String] = column[String]("fname")
 
@@ -32,18 +32,21 @@ trait UserInfoFirst extends HasDatabaseConfigProvider[JdbcProfile]
 
     def mobile: Rep[String] = column[String]("mobile")
 
-    def gender = column[String]("gender")
+    def gender: Rep[String] = column[String]("gender")
 
-    def age = column[Int]("age")
+    def age: Rep[Int] = column[Int]("age")
 
-    def hobbies = column[String]("hobbies")
+    def hobbies: Rep[String] = column[String]("hobbies")
 
-    def isEnable = column[Boolean]("isEnabled")
+    def isEnable: Rep[Boolean] = column[Boolean]("isEnabled")
 
-    def isAdmin = column[Boolean]("isAdmin")
+    def isAdmin: Rep[Boolean] = column[Boolean]("isAdmin")
 
+    //scalastyle:off
     def * : ProvenShape[User] = (id,fname,mname,lname,email,password,mobile,
                                  gender,age,hobbies,isEnable,isAdmin)<>(User.tupled, User.unapply)
+
+    //scalastyle:on
   }
 
   val userQuery: TableQuery[UserForm] = TableQuery[UserForm]
