@@ -1,6 +1,5 @@
 package model
 
-import org.specs2.mutable.Specification
 import play.api.Application
 import play.api.inject.guice.GuiceApplicationBuilder
 
@@ -14,8 +13,4 @@ class ModelTest[T: ClassTag] {
 
   lazy val app2doo: Application => T = Application.instanceCache[T]
   lazy val repository : T = app2doo(fakeApp)
-}
-
-class AssignmentInfoRepo extends Specification {
-
 }
