@@ -4,7 +4,7 @@ import javax.inject.Inject
 
 import model.{User, UserForms, UserInfoRepo}
 import play.api.i18n.I18nSupport
-import play.api.mvc.{AbstractController, AnyContent, ControllerComponents, Request}
+import play.api.mvc._
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
@@ -14,15 +14,15 @@ class SignUpController @Inject()(cc: ControllerComponents, form: UserForms, user
 
   val message = cc.messagesApi
 
-  def signUp = Action { implicit request: Request[AnyContent] =>
+  def signUp: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.signup(form.signUpForm))
   }
 
-  def profile = Action { implicit request: Request[AnyContent] =>
+  def profile: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.userProfile())
   }
 
-  def userPost = Action.async { implicit request: Request[AnyContent] =>
+  def userPost: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     form.signUpForm.bindFromRequest().fold(
       formsWithErrors => {
         Future.successful(BadRequest(views.html.signup(formsWithErrors)))

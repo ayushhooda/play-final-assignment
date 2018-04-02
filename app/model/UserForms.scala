@@ -95,20 +95,24 @@ class UserForms {
 
   def allLettersConstraint: Constraint[String] = {
     Constraint("usernameCheck")(
-      name => if (name matches """[A-Za-z]+""")
+      name => if (name matches """[A-Za-z]+""") {
         Valid
-      else
+      }
+      else {
         Invalid(ValidationError("name can only contain letters"))
+      }
     )
   }
 
   def checkLengthConstraint: Constraint[String] = {
     Constraint("mobile")({
       mobile =>
-        if (mobile.length == 10 && mobile.matches("""[0-9]+"""))
+        if (mobile.length == 10 && mobile.matches("""[0-9]+""")) {
           Valid
-        else
+        }
+        else {
           Invalid(ValidationError("mobile number must be 10 digits"))
+        }
     })
   }
 

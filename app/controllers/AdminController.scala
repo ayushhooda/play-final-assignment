@@ -13,11 +13,11 @@ import scala.concurrent.{Await, Future}
 class AdminController @Inject()(cc: ControllerComponents, form: UserForms, assignmentRepo: AssignmentInfoRepo, userRepo: UserInfoRepo) extends
   AbstractController(cc) with I18nSupport {
 
-  def profile() = Action { implicit request: Request[AnyContent] =>
+  def profile(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
    Ok(views.html.adminProfile())
   }
 
-  def addAssignment() = Action.async { implicit request: Request[AnyContent] =>
+  def addAssignment(): Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     form.assignmentForm.bindFromRequest.fold(
       formWithErrors => {
         Future.successful(BadRequest(views.html.addAssignment(formWithErrors)))
@@ -31,13 +31,13 @@ class AdminController @Inject()(cc: ControllerComponents, form: UserForms, assig
       })
   }
 
-  def showAssignments() = Action { implicit request: Request[AnyContent] =>
+  def showAssignments(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     val assignmentList = assignmentRepo.viewAssignments()
     val result = Await.result(assignmentList, Duration.Inf)
     Ok(views.html.viewAssignments(result))
   }
 
-  def showUsers() = Action { implicit request: Request[AnyContent] =>
+  def showUsers(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     val userList = userRepo.getAllUsers
     val result = Await.result(userList, Duration.Inf)
     Ok(views.html.viewUsers(result))
