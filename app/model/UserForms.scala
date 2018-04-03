@@ -74,6 +74,9 @@ class UserForms {
   val allNumbers: Regex = """\d*""".r
   val allLetters: Regex = """[A-Za-z]*""".r
 
+  /**
+    * @return - validity of password
+    */
   def passwordCheckConstraint(): Constraint[String] = {
     Constraint[String]("constraint.password") {
       plainText =>
@@ -91,8 +94,16 @@ class UserForms {
     }
   }
 
+  /**
+    * @param password - password of user
+    * @param confirmPassword - confirm password of user
+    * @return - true if both password match
+    */
   def passwordCheck(password:String,confirmPassword:String): Boolean = password == confirmPassword
 
+  /**
+    * @return - validity of name that it contains only letters
+    */
   def allLettersConstraint: Constraint[String] = {
     Constraint("usernameCheck")(
       name => if (name matches """[A-Za-z]+""") {
@@ -104,6 +115,9 @@ class UserForms {
     )
   }
 
+  /**
+    * @return - validity of length of mobile number
+    */
   def checkLengthConstraint: Constraint[String] = {
     Constraint("mobile")({
       mobile =>

@@ -14,10 +14,16 @@ class SignInController @Inject()(cc: ControllerComponents, form: UserForms, user
 
   val message = cc.messagesApi
 
+  /**
+    * @return - open signin page
+    */
   def signIn: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.signin(form.signInForm))
   }
 
+  /**
+    * @return - signin
+    */
   def userPost: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     form.signInForm.bindFromRequest().fold(
       formsWithErrors => {
@@ -46,6 +52,9 @@ class SignInController @Inject()(cc: ControllerComponents, form: UserForms, user
     )
   }
 
+  /**
+    * @return - change password
+    */
   def changePassword: Action[AnyContent] = Action async { implicit request: Request[AnyContent] =>
     form.forgotPasswordForm.bindFromRequest().fold(
       formsWithErrors => {

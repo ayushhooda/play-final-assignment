@@ -14,16 +14,25 @@ class ProfileController @Inject()(cc: ControllerComponents, userForm: UserForms,
                                   userRepo: UserInfoRepo)
   extends AbstractController(cc) with I18nSupport {
 
+  /**
+    * @return - open forgot password page
+    */
   def forgotPassword(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.forgotPassword(userForm.forgotPasswordForm))
   }
 
+  /**
+    * @return - views assignments
+    */
   def viewAssignments(): Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     val assignmentList = assignmentRepo.viewAssignments()
     val result = Await.result(assignmentList, Duration.Inf)
     Ok(views.html.viewUserAssignments(result))
   }
 
+  /**
+    * @return - profile details
+    */
   def getProfileDetails: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     val email = request.session.get("email").get
     val userDetails: Future[User] = userRepo.getUserDetails(email)
@@ -35,6 +44,9 @@ class ProfileController @Inject()(cc: ControllerComponents, userForm: UserForms,
     }
   }
 
+  /**
+    * @return - update details
+    */
   def updateDetails: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     userForm.userProfileForm.bindFromRequest.fold(
       formWithErrors => {

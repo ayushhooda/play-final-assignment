@@ -14,14 +14,23 @@ class SignUpController @Inject()(cc: ControllerComponents, form: UserForms, user
 
   val message = cc.messagesApi
 
+  /**
+    * @return - opens signup page
+    */
   def signUp: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.signup(form.signUpForm))
   }
 
+  /**
+    * @return - opens profile page
+    */
   def profile: Action[AnyContent] = Action { implicit request: Request[AnyContent] =>
     Ok(views.html.userProfile())
   }
 
+  /**
+    * @return - signup user
+    */
   def userPost: Action[AnyContent] = Action.async { implicit request: Request[AnyContent] =>
     form.signUpForm.bindFromRequest().fold(
       formsWithErrors => {
