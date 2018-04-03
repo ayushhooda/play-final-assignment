@@ -74,37 +74,71 @@ trait UserInfoRepoImplementation extends UserInfoRepoInterface {
 
   import profile.api._
 
+  /**
+    * @param userInformation - User record
+    * @return - true if record added successfully
+    */
   def store(userInformation: User): Future[Boolean] =
     db.run(userQuery += userInformation) map (_ > 0)
 
+  /**
+    * @param email - email of user
+    * @param password - password of user
+    * @return - true if valid
+    */
   def isUserValid(email: String, password: String): Future[Boolean] = {
     db.run(userQuery
       .filter(data => data.email.toLowerCase === email.toLowerCase && data.password === password)
       .to[List].result).map(_.nonEmpty)
   }
 
+  /**
+    * @param email - email of user
+    * @return - true if enabled
+    */
   def isUserEnabled(email: String): Future[Boolean] = {
     db.run(userQuery.filter(user => user.email === email && user.isEnable).to[List].result).map(_.nonEmpty)
   }
 
+  /**
+    * @param email - email of user
+    * @return - true if email exists
+    */
   def checkUserExists(email: String): Future[Boolean] = {
     db.run(userQuery.filter(_.email === email).to[List].result).map(_.nonEmpty)
   }
 
+  /**
+    * @param email - email of user
+    * @param password - new password of user
+    * @return - true if password is updated succesfully
+    */
   def updatePassword(email: String, password: String): Future[Boolean] = {
     db.run(userQuery.filter(_.email === email).map(_.password).update(password)).map(_ > 0)
   }
 
+  /**
+    * @param email - email of user
+    * @return - true if admin
+    */
   def isAdmin(email: String): Future[Boolean] = {
     db.run(userQuery.filter(x => x.email === email && x.isAdmin).to[List].result).map(_.nonEmpty)
   }
 
   // Admin's view all users method
+  /**
+    * @return - list of all users
+    */
   def getAllUsers: Future[List[User]] = {
     db.run(userQuery.filter(_.isAdmin === false).to[List].result)
   }
 
   // User's update details method
+  /**
+    * @param email - email of user
+    * @param updatedData - updated data
+    * @return - true if updated
+    */
   def updateUserDetails(email: String, updatedData: UserProfile): Future[Boolean] = {
     db.run(userQuery.filter(_.email === email).map(user => (user.fname, user.mname, user.lname,
       user.mobile, user.age, user.hobbies)).update(updatedData.fname, updatedData.mname,
@@ -112,11 +146,20 @@ trait UserInfoRepoImplementation extends UserInfoRepoInterface {
   }
 
   // User's view profile method
+  /**
+    * @param email - email of user
+    * @return - User details
+    */
   def getUserDetails(email: String): Future[User] = {
     db.run(userQuery.filter(_.email === email)
       .to[List].result.head)
   }
 
+  /**
+    * @param email - email of user
+    * @param value - boolean value
+    * @return - true if enabled/disabled
+    */
   def enableOrDisableUser(email: String, value: Boolean): Future[Boolean] = {
     db.run(userQuery.filter(_.email === email).map(_.isEnable).update(value)).map(_ > 0)
   }

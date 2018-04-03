@@ -47,13 +47,24 @@ trait AssignmentInfoRepoImplementation extends AssignmentInfoRepoInterface {
 
   import profile.api._
 
+  /**
+    * @param assignment - new assignment to be added
+    * @return - true if successfully added
+    */
   def addAssignment(assignment: Assignment): Future[Boolean] =
     db.run(assignmentQuery += assignment) map (_ > 0)
 
+  /**
+    * @return - return list of all assignments
+    */
   def viewAssignments(): Future[List[Assignment]] = {
     db.run(assignmentQuery.to[List].result)
   }
 
+  /**
+    * @param id - id of assignment to be deleted
+    * @return - true if successfully deleted
+    */
   def deleteAssignment(id: Int): Future[Boolean] = {
     db.run(assignmentQuery.filter(_.id === id).delete).map(_ > 0)
   }
