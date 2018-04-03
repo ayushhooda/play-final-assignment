@@ -30,9 +30,13 @@ class ProfileControllerSpec extends PlaySpec with Mockito {
 
 
   "forgot password" in {
-
+    val controller = getMockedObject
+    when(controller.userForm.forgotPasswordForm) thenReturn { val form = new UserForms{}
+      form.forgotPasswordForm}
+    val result = controller.profileController.forgotPassword().apply(FakeRequest()
+      .withCSRFToken)
+    status(result) must equal(OK)
   }
-
 
 
 
