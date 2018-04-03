@@ -29,6 +29,11 @@ class ProfileControllerSpec extends PlaySpec with Mockito {
   }
 
 
+  "forgot password" in {
+
+  }
+
+
 
 
   def getMockedObject: TestObjects = {
